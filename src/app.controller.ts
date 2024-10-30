@@ -15,7 +15,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get('instagram')
-  handleGetWebhook(@Query() query: GetWebHookQueryDto): string {
+  handleGetWebhook(@Query() query: GetWebHookQueryDto) {
     const mode = query['hub.mode'];
     const challenge = query['hub.challenge'];
     const token = query['hub.verify_token'];
@@ -34,6 +34,7 @@ export class AppController {
 
   @Post('instagram')
   handlePostWebhook(@Body() payload: any) {
+    console.log('payload received', payload);
     logger.info(payload);
     return '';
   }
