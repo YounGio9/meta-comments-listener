@@ -22,6 +22,7 @@ export class AppController {
     logger.info(query);
     if (mode && token) {
       if (mode === 'subscribe' && token === 'verifyTokenSecret') {
+        logger.info('Webhook verified');
         return challenge;
       } else {
         throw new HttpException('Invalid verify token', 403);
