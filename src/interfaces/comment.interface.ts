@@ -1,9 +1,15 @@
 export interface Comment {
-  entry: CommentChange[];
+  entry: Entry[];
   object: string;
 }
 
-export interface CommentChange {
+export interface Entry {
+  id: string;
+  time: number;
+  changes: Change[];
+}
+
+export interface Change {
   value: CommentValue | MediaValue;
   field: string;
 }
