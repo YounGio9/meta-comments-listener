@@ -44,8 +44,8 @@ export class AppController implements OnModuleInit {
   @Post('instagram')
   async handlePostWebhook(@Body() payload: Comment) {
     logger.info(payload, 'Received POST webhook payload:');
-    if (payload.changes[0].field == 'comments') {
-      const comment = payload.changes[0].value as CommentValue;
+    if (payload.entry[0].field == 'comments') {
+      const comment = payload.entry[0].value as CommentValue;
       const result: CommentValue & { media?: any } =
         await this.appService.resolveParentComment(comment);
 
@@ -54,8 +54,8 @@ export class AppController implements OnModuleInit {
       logger.info(result, 'New comment');
     }
 
-    if (payload.changes[0].field == 'mentions') {
-      const media = payload.changes[0].value as MediaValue;
+    if (payload.entry[0].field == 'mentions') {
+      const media = payload.entry[0].value as MediaValue;
       const result: MediaValue & { media?: any; comment?: any } = media;
       result.media = await this.appService.getMedia(media.media_id);
       result.comment = await this.appService.getComment(media.comment_id);

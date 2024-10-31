@@ -1,7 +1,5 @@
 export interface Comment {
-  id: string;
-  time: number;
-  changes: CommentChange[];
+  entry: CommentChange[];
   object: string;
 }
 
