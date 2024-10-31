@@ -43,7 +43,7 @@ export class AppController implements OnModuleInit {
 
   @Post('instagram')
   async handlePostWebhook(@Body() payload: Comment) {
-    logger.info('Received POST webhook payload:', payload);
+    logger.info(payload, 'Received POST webhook payload:');
     if (payload.changes[0].field == 'comments') {
       const comment = payload.changes[0].value as CommentValue;
       const result: CommentValue & { media?: any } =
