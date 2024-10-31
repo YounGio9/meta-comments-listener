@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 export class GetWebHookQueryDto {
   @IsString()
@@ -12,4 +12,13 @@ export class GetWebHookQueryDto {
   @IsString()
   @IsNotEmpty()
   'hub.mode': string;
+}
+
+export class ReplyDto {
+  @IsString()
+  @MinLength(2)
+  text: string;
+
+  @IsString()
+  commentId: string;
 }
