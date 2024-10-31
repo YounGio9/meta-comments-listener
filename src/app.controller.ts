@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpException,
+  HttpStatus,
   Post,
   Query,
 } from '@nestjs/common';
@@ -15,27 +16,28 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get('instagram')
-  handleGetWebhook(@Query() query: GetWebHookQueryDto) {
+  handleGetWebhook(@Query() query: GetWebHookQueryDto): string | void {
     const mode = query['hub.mode'];
     const challenge = query['hub.challenge'];
     const token = query['hub.verify_token'];
-    logger.info(query);
+    logger.info('Received GET webhook query:', query);
+
+    const VERIFY_TOKEN = process.env.VERIFY_TOKEN || 'verifyTokenSecret';
+
     if (mode && token) {
-      if (mode === 'subscribe' && token === 'verifyTokenSecret') {
+      if (mode === 'subscribe' && token === VERIFY_TOKEN) {
         logger.info('Webhook verified');
         return challenge;
       } else {
-        throw new HttpException('Invalid verify token', 403);
+        logger.warn('Invalid verify token');
+        throw new HttpException('Invalid verify token', HttpStatus.FORBIDDEN);
       }
-    } else {
-      return;
     }
   }
 
   @Post('instagram')
-  handlePostWebhook(@Body() payload: any) {
-    console.log('payload received', payload);
-    logger.info(payload);
+  handlePostWebhook(@Body() payload: any): string {
+    logger.info(payload, 'Received Instagram POST webhook payload:');
     return '';
   }
 }
