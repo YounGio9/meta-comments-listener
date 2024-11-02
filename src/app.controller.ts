@@ -21,7 +21,7 @@ import {
 export class AppController implements OnModuleInit {
   constructor(private readonly appService: AppService) {}
 
-  @Get('instagram')
+  @Get(['instagram', 'facebook'])
   handleGetWebhook(@Query() query: GetWebHookQueryDto): string | void {
     const mode = query['hub.mode'];
     const challenge = query['hub.challenge'];
@@ -41,7 +41,7 @@ export class AppController implements OnModuleInit {
     }
   }
 
-  @Post('instagram')
+  @Post(['instagram', 'facebook'])
   async handlePostWebhook(@Body() payload: Comment) {
     logger.info(payload, 'Received POST webhook payload:');
 
@@ -76,9 +76,5 @@ export class AppController implements OnModuleInit {
     return this.appService.reply(payload);
   }
 
-  async onModuleInit() {
-    // logger.info(
-    //   await this.appService.reply('18290270350232790', 'Test from backend api'),
-    // );
-  }
+  async onModuleInit() {}
 }
