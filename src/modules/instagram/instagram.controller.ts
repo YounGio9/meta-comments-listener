@@ -8,20 +8,20 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { AppService } from './app.service';
-import { GetWebHookQueryDto } from './dto';
-import { logger } from './config/logger.config';
+import { InstagramService } from './instagram.service';
+import { GetWebHookQueryDto } from './instagram.dto';
+import { logger } from '../../config/logger.config';
 import {
   Comment,
   CommentValue,
   MediaValue,
-} from './interfaces/comment.interface';
+} from '../../interfaces/comment.interface';
 
 @Controller('webhook')
-export class AppController implements OnModuleInit {
-  constructor(private readonly appService: AppService) {}
+export class InstagramController implements OnModuleInit {
+  constructor(private readonly instagramService: InstagramService) {}
 
-  @Get(['instagram', 'facebook'])
+  @Get('instagram')
   handleGetWebhook(@Query() query: GetWebHookQueryDto): string | void {
     const mode = query['hub.mode'];
     const challenge = query['hub.challenge'];
@@ -41,7 +41,7 @@ export class AppController implements OnModuleInit {
     }
   }
 
-  @Post(['instagram', 'facebook'])
+  @Post('instagram')
   async handlePostWebhook(@Body() payload: Comment) {
     logger.info(payload, 'Received POST webhook payload:');
 
@@ -49,9 +49,9 @@ export class AppController implements OnModuleInit {
       if (payload.entry[0].changes[0].field == 'comments') {
         const comment = payload.entry[0].changes[0].value as CommentValue;
         const result: CommentValue & { media?: any } =
-          await this.appService.resolveParentComment(comment);
+          await this.instagramService.resolveParentComment(comment);
 
-        result.media = await this.appService.getMedia(comment.media.id);
+        result.media = await this.instagramService.getMedia(comment.media.id);
 
         logger.info(result, 'New comment');
       }
@@ -59,9 +59,11 @@ export class AppController implements OnModuleInit {
       if (payload.entry[0].changes[0].field == 'mentions') {
         const media = payload.entry[0].changes[0].value as MediaValue;
         const result: MediaValue & { media?: any; comment?: any } = media;
-        result.media = await this.appService.getMedia(media.media_id);
-        result.comment = await this.appService.getComment(media.comment_id);
-        result.comment = await this.appService.resolveParentComment(
+        result.media = await this.instagramService.getMedia(media.media_id);
+        result.comment = await this.instagramService.getComment(
+          media.comment_id,
+        );
+        result.comment = await this.instagramService.resolveParentComment(
           result.comment,
         );
 
@@ -69,11 +71,6 @@ export class AppController implements OnModuleInit {
       }
     }
     return '';
-  }
-
-  @Post('reply-to-comment')
-  handleReplyToComment(@Body() payload: any) {
-    return this.appService.reply(payload);
   }
 
   async onModuleInit() {}

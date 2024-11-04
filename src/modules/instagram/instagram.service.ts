@@ -1,13 +1,13 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { AppConfig } from './config/configuration';
+import { AppConfig } from '../../config/configuration';
 import { firstValueFrom } from 'rxjs';
-import { CommentValue } from './interfaces/comment.interface';
-import { ReplyDto } from './dto';
+import { CommentValue } from '../../interfaces/comment.interface';
+import { ReplyDto } from './instagram.dto';
 
 @Injectable()
-export class AppService {
+export class InstagramService {
   constructor(
     private readonly httpService: HttpService,
     private readonly configService: ConfigService<AppConfig>,

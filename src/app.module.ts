@@ -1,18 +1,19 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
 import configuration from './config/configuration';
+import { InstagramModule } from './modules/instagram/instagram.module';
+import { CommentModule } from './modules/comments/comment.module';
 
 @Module({
   imports: [
-    HttpModule,
+    HttpModule.register({ global: true }),
     ConfigModule.forRoot({
       load: [configuration],
+      isGlobal: true,
     }),
+    InstagramModule,
+    CommentModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
