@@ -14,7 +14,7 @@ export class GetWebHookQueryDto {
   'hub.mode': string;
 }
 
-export class CommentDto {
+export class FBCommentDto {
   @IsString()
   @MinLength(2)
   text: string;

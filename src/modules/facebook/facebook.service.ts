@@ -3,8 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AppConfig } from '../../config/configuration';
 import { firstValueFrom } from 'rxjs';
-import { CommentValue } from '../../interfaces/comment.interface';
-import { CommentDto, ReplyDto } from './facebook.dto';
+import { FBCommentDto, ReplyDto } from './facebook.dto';
 
 @Injectable()
 export class FacebookService {
@@ -12,43 +11,6 @@ export class FacebookService {
     private readonly httpService: HttpService,
     private readonly configService: ConfigService<AppConfig>,
   ) {}
-  // async getComment(commentId: string): Promise<CommentValue> {
-  //   const retrievedComment = await this.queryInstagram(
-  //     'GET',
-  //     {
-  //       fields: `
-  //         hidden,
-  //         media,
-  //         text,
-  //         timestamp,
-  //         from,
-  //         parent_id
-  //       `,
-  //     },
-  //     commentId,
-  //   );
-
-  //   return retrievedComment.data;
-  // }
-
-  // async getMedia(mediaId: string) {
-  //   const retrievedMedia = await this.queryInstagram(
-  //     'GET',
-  //     {
-  //       fields: `
-  //         id,
-  //         media_type,
-  //         media_url,
-  //         timestamp,
-  //         like_count,
-  //         comments_count
-  //       `,
-  //     },
-  //     mediaId,
-  //   );
-
-  //   return retrievedMedia.data;
-  // }
 
   async replyToComment(payload: ReplyDto) {
     const successfullReply = await this.queryFacebook(
@@ -62,7 +24,7 @@ export class FacebookService {
     return successfullReply.data;
   }
 
-  async commentOnPost(payload: CommentDto) {
+  async commentOnPost(payload: FBCommentDto) {
     const successfullReply = await this.queryFacebook(
       'POST',
       {},

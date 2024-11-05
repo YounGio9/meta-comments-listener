@@ -2,8 +2,6 @@ import {
   Body,
   Controller,
   Get,
-  HttpException,
-  HttpStatus,
   OnModuleInit,
   Post,
   Query,
@@ -16,29 +14,18 @@ import {
   CommentValue,
   MediaValue,
 } from '../../interfaces/comment.interface';
+import { TokenService } from 'src/services/token.service';
 
 @Controller('webhook')
 export class InstagramController implements OnModuleInit {
-  constructor(private readonly instagramService: InstagramService) {}
+  constructor(
+    private readonly instagramService: InstagramService,
+    private readonly tokenService: TokenService,
+  ) {}
 
   @Get('instagram')
   handleGetWebhook(@Query() query: GetWebHookQueryDto): string | void {
-    const mode = query['hub.mode'];
-    const challenge = query['hub.challenge'];
-    const token = query['hub.verify_token'];
-    logger.info('Received GET webhook query:', query);
-
-    const VERIFY_TOKEN = process.env.VERIFY_TOKEN || 'verifyTokenSecret';
-
-    if (mode && token) {
-      if (mode === 'subscribe' && token === VERIFY_TOKEN) {
-        logger.info('Webhook verified');
-        return challenge;
-      } else {
-        logger.warn('Invalid verify token');
-        throw new HttpException('Invalid verify token', HttpStatus.FORBIDDEN);
-      }
-    }
+    return this.tokenService.verifyInstagramWebhook(query);
   }
 
   @Post('instagram')
