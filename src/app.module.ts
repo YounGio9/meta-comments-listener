@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import configuration from './config/configuration';
 import { InstagramModule } from './modules/instagram/instagram.module';
 import { CommentModule } from './modules/comments/comment.module';
+import { FacebookModule } from './modules/facebook/facebook.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { CommentModule } from './modules/comments/comment.module';
       isGlobal: true,
     }),
     InstagramModule,
+    FacebookModule,
     CommentModule,
   ],
 })

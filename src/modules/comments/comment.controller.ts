@@ -6,8 +6,13 @@ import { ReplyDto } from '../instagram/instagram.dto';
 export class CommentController implements OnModuleInit {
   constructor(private readonly instagramService: InstagramService) {}
 
-  @Post('/instagram/reply')
-  handleReplyToComment(@Body() payload: ReplyDto) {
+  @Post('instagram/reply')
+  handleReplyToIGComment(@Body() payload: ReplyDto) {
+    return this.instagramService.reply(payload);
+  }
+
+  @Post('facebook/reply')
+  handleReplyToFBComment(@Body() payload: ReplyDto) {
     return this.instagramService.reply(payload);
   }
 
