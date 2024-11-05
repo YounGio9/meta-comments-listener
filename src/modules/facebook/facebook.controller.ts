@@ -69,12 +69,12 @@ export class FacebookController implements OnModuleInit {
     return '';
   }
 
-  // async onModuleInit() {
-  //   logger.info(
-  //     await this.facebookService.commentOnPost({
-  //       commentId: '',
-  //       text: '',
-  //     }),
-  //   );
-  // }
+  async onModuleInit() {
+    //   logger.info(
+    //     await this.facebookService.commentOnPost({
+    //       commentId: '',
+    //       text: '',
+    //     }),
+    //   );
+  }
 }
