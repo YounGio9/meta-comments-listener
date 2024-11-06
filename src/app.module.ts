@@ -5,6 +5,7 @@ import configuration from './config/configuration';
 import { InstagramModule } from './modules/instagram/instagram.module';
 import { CommentModule } from './modules/comments/comment.module';
 import { FacebookModule } from './modules/facebook/facebook.module';
+import { LikeModule } from './modules/likes/like.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { FacebookModule } from './modules/facebook/facebook.module';
     InstagramModule,
     FacebookModule,
     CommentModule,
+    LikeModule,
   ],
 })
 export class AppModule {}

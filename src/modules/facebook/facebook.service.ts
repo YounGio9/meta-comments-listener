@@ -37,6 +37,16 @@ export class FacebookService {
     return successfullReply.data;
   }
 
+  async likePost(postId: string) {
+    const successfullLike = await this.queryFacebook(
+      'POST',
+      {},
+      `${postId}/likes`,
+    );
+
+    return successfullLike.data;
+  }
+
   private queryFacebook(
     method: 'POST' | 'GET',
     params: Record<string, string>,
